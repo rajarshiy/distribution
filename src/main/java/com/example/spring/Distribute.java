@@ -63,6 +63,8 @@ public class Distribute {
 
 		if (amount > 0) {
 			return equalSplit(accounts, amount);
+		} else if (amount < 0) {
+			throw new RuntimeException();
 		}
 		{
 			return accounts;
@@ -78,7 +80,22 @@ public class Distribute {
 			distributedAmount = round(distributedAmount + splitAmount);
 			accounts.get(i).setAmount(splitAmount);
 		}
-		return accounts;
+		double diffAmount = round(amount - distributedAmount);
+		if (diffAmount == 0) {
+			return accounts;
+		} else if (diffAmount > 0) {
+			for (Account account : accounts) {
+				double derivedAmount = round(account.getAmount() + diffAmount);
+				if (round(account.getAmountDue() - derivedAmount) > 0) {
+					account.setAmount(derivedAmount);
+					break;
+				}
+			}
+			return accounts;
+		} else {
+			throw new RuntimeException();
+		}
+
 	}
 
 	public static double round(double value) {

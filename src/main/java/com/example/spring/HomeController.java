@@ -23,7 +23,7 @@ public class HomeController {
 	}
 	
 	if(amount < 0) {
-		 return new ResponseEntity(new Error(400, "Distributed Amount should "), HttpStatus.BAD_REQUEST);
+		 return new ResponseEntity(new Error(400, "Distributed Amount should be greater than zero "), HttpStatus.BAD_REQUEST);
 		}
 	List <Account> result = Distribute.splitAmountByType(request.getDistributionType(), accounts, amount);
 	return new ResponseEntity(result, HttpStatus.OK);
