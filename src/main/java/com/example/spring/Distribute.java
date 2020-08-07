@@ -10,8 +10,6 @@ public class Distribute {
 
 	public static List<Account> splitAmountByType(String type, List<Account> accounts, double amount) {
 		switch (type) {
-		case "EqualSplit":
-			return equalSplit(accounts, amount);
 		case "WeightedSplit":
 			return weightedSplit(accounts, amount);
 		default:
@@ -74,11 +72,11 @@ public class Distribute {
 	public static List<Account> weightedSplit(List<Account> accounts, double amount) {
 		double total = totalAmountDue(accounts);
 		double distributedAmount = 0.0;
-		for (int i = 0; i < accounts.size(); i++) {
-			double percent = round(accounts.get(i).getAmountDue() / total);
+		for (Account account :  accounts) {
+			double percent = round(account.getAmountDue() / total);
 			double splitAmount = round(percent * amount);
 			distributedAmount = round(distributedAmount + splitAmount);
-			accounts.get(i).setAmount(splitAmount);
+			account.setAmount(splitAmount);
 		}
 		double diffAmount = round(amount - distributedAmount);
 		if (diffAmount == 0) {
